@@ -1,12 +1,14 @@
 package com.example.dreamproject.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(exclude = "password")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,5 +21,5 @@ public class User {
     private String password; // 암호화된 비밀번호
 
     @Column(nullable = false)
-    private String role; // 사용자 권한 (예: ROLE_USER, ROLE_ADMIN)
+    private String role = "ROLE_USER"; // 사용자 권한 기본값
 }
