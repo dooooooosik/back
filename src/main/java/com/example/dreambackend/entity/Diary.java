@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "diary")
 public class Diary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,8 +15,7 @@ public class Diary {
     private String content;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false, updatable = false)
-    private Date createdAt;
+    private Date createdAt = new Date();
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
@@ -26,11 +24,9 @@ public class Diary {
     @JoinColumn(name = "user_id", nullable = false)
     private AppUser user;
 
-    public Diary() {
-        this.createdAt = new Date();
-    }
+    private String username; // username 필드 추가
 
-    // Getter and Setter methods
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -77,5 +73,13 @@ public class Diary {
 
     public void setUser(AppUser user) {
         this.user = user;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

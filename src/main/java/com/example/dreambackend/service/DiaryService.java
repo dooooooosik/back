@@ -1,7 +1,5 @@
 package com.example.dreambackend.service;
 
-import java.util.Date;
-
 import com.example.dreambackend.entity.Diary;
 import com.example.dreambackend.entity.AppUser;
 import com.example.dreambackend.repository.DiaryRepository;
@@ -21,27 +19,45 @@ public class DiaryService {
     }
 
     public Diary createDiary(Long userId, String title, String content) {
-        AppUser user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        AppUser user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
         Diary diary = new Diary();
         diary.setUser(user);
+        diary.setUsername(user.getUsername()); // username 설정
         diary.setTitle(title);
         diary.setContent(content);
+
         return diaryRepository.save(diary);
     }
+
 
     public List<Diary> getDiaries(Long userId) {
         return diaryRepository.findByUserId(userId);
     }
 
-    public void deleteDiary(Long diaryId) {
-        diaryRepository.deleteById(diaryId);
-    }
+    public Diary updateDiary(Long userId, Long diaryId, String title, String content) {
+        Diary diary = diaryRepository.findById(diaryId)
+                .orElseThrow(() -> new IllegalArgumentException("Diary not found"));
 
-    public Diary updateDiary(Long diaryId, String title, String content) {
-        Diary diary = diaryRepository.findById(diaryId).orElseThrow(() -> new IllegalArgumentException("Diary not found"));
+        if (!diary.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("Unauthorized to update this diary");
+        }
+
         diary.setTitle(title);
         diary.setContent(content);
-        diary.setUpdatedAt(new Date());
+
         return diaryRepository.save(diary);
+    }
+
+    public void deleteDiary(Long userId, Long diaryId) {
+        Diary diary = diaryRepository.findById(diaryId)
+                .orElseThrow(() -> new IllegalArgumentException("Diary not found"));
+
+        if (!diary.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("Unauthorized to delete this diary");
+        }
+
+        diaryRepository.delete(diary);
     }
 }
