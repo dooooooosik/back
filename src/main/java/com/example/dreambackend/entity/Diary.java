@@ -14,11 +14,12 @@ public class Diary {
     @Lob
     private String content;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt = new Date();
+    @Temporal(TemporalType.DATE) // 날짜만 저장
+    private Date createdAt;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
+
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

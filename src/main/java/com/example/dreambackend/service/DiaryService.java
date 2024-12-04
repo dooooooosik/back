@@ -5,7 +5,7 @@ import com.example.dreambackend.entity.AppUser;
 import com.example.dreambackend.repository.DiaryRepository;
 import com.example.dreambackend.repository.UserRepository;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -18,16 +18,16 @@ public class DiaryService {
         this.userRepository = userRepository;
     }
 
-    public Diary createDiary(Long userId, String title, String content) {
+    public Diary createDiary(Long userId, String title, String content, String createdAt) {
         AppUser user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         Diary diary = new Diary();
         diary.setUser(user);
-        diary.setUsername(user.getUsername()); // username 설정
+        diary.setUsername(user.getUsername());
         diary.setTitle(title);
         diary.setContent(content);
-
+        diary.setCreatedAt(java.sql.Date.valueOf(createdAt)); // 날짜 저장
         return diaryRepository.save(diary);
     }
 
