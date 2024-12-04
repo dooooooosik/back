@@ -20,7 +20,7 @@ public class GPTService {
 
     public String getDreamInterpretation(String keyword) {
         String gptApiUrl = "https://api.openai.com/v1/chat/completions"; // OpenAI GPT API
-        String apiKey = "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"; // OpenAI API 키 설정
+        String apiKey = "OPENAI_API_KEY"; // OpenAI API 키 설정
 
         // GPT 요청 데이터
         Map<String, Object> requestBody = Map.of(
