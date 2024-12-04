@@ -34,14 +34,6 @@ public class DiaryController {
         return ResponseEntity.ok(diaryService.getDiaries(userId));
     }
 
-    @PutMapping("/{diaryId}")
-    public ResponseEntity<Diary> updateDiary(Authentication authentication, @PathVariable Long diaryId,
-                                             @RequestBody DiaryRequest request) {
-        Long userId = Long.valueOf(authentication.getName());
-        Diary diary = diaryService.updateDiary(userId, diaryId, request.getTitle(), request.getContent());
-        return ResponseEntity.ok(diary);
-    }
-
     @DeleteMapping("/{diaryId}")
     public ResponseEntity<?> deleteDiary(Authentication authentication, @PathVariable Long diaryId) {
         Long userId = Long.valueOf(authentication.getName());

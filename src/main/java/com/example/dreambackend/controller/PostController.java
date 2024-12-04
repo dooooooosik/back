@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:5500")
 @RestController
 @RequestMapping("/api/posts")
 public class PostController {
@@ -33,13 +33,6 @@ public class PostController {
     @GetMapping("/{id}")
     public ResponseEntity<Post> getPostById(@PathVariable Long id) {
         return ResponseEntity.ok(postService.getPostById(id));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Post> updatePost(Authentication authentication, @PathVariable Long id, @RequestBody PostRequest request) {
-        Long userId = Long.valueOf(authentication.getName());
-        Post post = postService.updatePost(userId, id, request.getTitle(), request.getContent());
-        return ResponseEntity.ok(post);
     }
 
     @DeleteMapping("/{id}")
@@ -71,5 +64,18 @@ class PostRequest {
 
     public void setContent(String content) {
         this.content = content;
+    }
+}
+
+class PostResponse {
+    private String content;
+    private String title;
+    private String authorName;
+
+
+    public PostResponse(Post post) {
+        this.content = post.getContent();
+        this.title = post.getTitle();
+        this.authorName = post.getAuthor().getUsername();
     }
 }
