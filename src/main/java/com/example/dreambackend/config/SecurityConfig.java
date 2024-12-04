@@ -46,6 +46,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/signup", "/api/auth/login").permitAll() // 회원가입, 로그인 허용
                         .requestMatchers("/api/diaries/**").authenticated() // 다이어리 API 인증 필요
+                        .requestMatchers("/api/posts/**").authenticated() // 게시판 API
                         .anyRequest().authenticated() // 기타 모든 요청 인증 필요
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // JWT 필터 추가
