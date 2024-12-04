@@ -33,6 +33,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(request -> {
+                    var config = new org.springframework.web.cors.CorsConfiguration();
+                    config.addAllowedOrigin("http://127.0.0.1:5500"); // 프론트엔드 주소
+                    config.addAllowedMethod("*"); // 모든 HTTP 메서드 허용
+                    config.addAllowedHeader("*"); // 모든 헤더 허용
+                    config.setAllowCredentials(true); // 쿠키 허용
+                    return config;
+                }))
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 비활성화
                 .authorizeHttpRequests(auth -> auth
