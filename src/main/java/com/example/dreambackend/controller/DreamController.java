@@ -15,7 +15,15 @@ public class DreamController {
 
     @GetMapping("/search")
     public ResponseEntity<String> searchDream(@RequestParam String keyword) {
-        String interpretation = gptService.getDreamInterpretation(keyword);
-        return ResponseEntity.ok(interpretation);
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("키워드를 입력해주세요.");
+        }
+
+        try {
+            String interpretation = gptService.getDreamInterpretation(keyword.trim());
+            return ResponseEntity.ok(interpretation);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("서버 오류 발생: " + e.getMessage());
+        }
     }
 }
