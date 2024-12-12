@@ -42,6 +42,30 @@ public class PostController {
         postService.deletePost(id, userId);
         return ResponseEntity.noContent().build();
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<Post> updatePost(
+            Authentication authentication,
+            @PathVariable Long id,
+            @RequestBody PostRequest request
+    ) {
+        Long userId = Long.valueOf(authentication.getName()); // 로그인한 사용자 ID 가져오기
+        Post updatedPost = postService.updatePost(userId, id, request.getTitle(), request.getContent()); // 서비스 호출
+        return ResponseEntity.ok(updatedPost); // 수정된 게시글 반환
+    }
+    @GetMapping("/myposts")
+    public ResponseEntity<List<Post>> getMyPosts(Authentication authentication) {
+        // JWT에서 사용자 ID 추출
+        Long userId = extractUserIdFromAuthentication(authentication);
+        List<Post> posts = postService.getPostsByUserId(userId);
+        return ResponseEntity.ok(posts);
+    }
+
+    private Long extractUserIdFromAuthentication(Authentication authentication) {
+        // JWT의 클레임에서 사용자 ID를 추출하는 로직
+        return Long.valueOf(authentication.getName());
+    }
+
+
 }
 
 class PostRequest {
@@ -70,12 +94,12 @@ class PostRequest {
 class PostResponse {
     private String content;
     private String title;
-    private String authorName;
+    private String username;
 
 
     public PostResponse(Post post) {
         this.content = post.getContent();
         this.title = post.getTitle();
-        this.authorName = post.getAuthor().getUsername();
+        this.username = post.getUser().getUsername();
     }
 }

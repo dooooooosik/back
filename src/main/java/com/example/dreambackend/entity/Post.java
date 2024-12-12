@@ -11,7 +11,7 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private AppUser author; // 게시글 작성자
+    private AppUser user; // 🔥 user로 명확히 설정
 
     private String title; // 게시글 제목
 
@@ -28,16 +28,21 @@ public class Post {
         return id;
     }
 
+    // 🔥 getUsername -> getUser()로 변경
+    public String getUsername() {
+        return user.getUsername(); // user의 username을 가져온다.
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
 
-    public AppUser getAuthor() {
-        return author;
+    public AppUser getUser() {
+        return user;
     }
 
-    public void setAuthor(AppUser author) {
-        this.author = author;
+    public void setUser(AppUser user) {
+        this.user = user; // 🔥 setUser로 명확히 수정
     }
 
     public String getTitle() {

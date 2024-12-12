@@ -22,16 +22,31 @@ public class DiaryController {
             Diary diary = diaryService.createDiary(userId, request.getTitle(), request.getContent(), request.getCreatedAt());
             return ResponseEntity.ok(diary);
         } catch (Exception e) {
-            e.printStackTrace(); // 에러 로그 출력
+            e.printStackTrace();
             return ResponseEntity.status(500).body("게시글 작성 중 오류가 발생했습니다: " + e.getMessage());
         }
     }
 
-
     @GetMapping
     public ResponseEntity<?> getUserDiaries(Authentication authentication) {
-        Long userId = Long.valueOf(authentication.getName()); // 사용자 ID 가져오기
+        Long userId = Long.valueOf(authentication.getName());
         return ResponseEntity.ok(diaryService.getDiaries(userId));
+    }
+
+    @PutMapping("/{diaryId}")
+    public ResponseEntity<?> updateDiary(
+            Authentication authentication,
+            @PathVariable Long diaryId,
+            @RequestBody DiaryRequest request
+    ) {
+        try {
+            Long userId = Long.valueOf(authentication.getName());
+            Diary updatedDiary = diaryService.updateDiary(userId, diaryId, request.getTitle(), request.getContent(), request.getCreatedAt());
+            return ResponseEntity.ok(updatedDiary);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("다이어리 수정 중 오류가 발생했습니다: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/{diaryId}")
@@ -42,13 +57,11 @@ public class DiaryController {
     }
 }
 
-// DiaryRequest: 요청 본문에서 title과 content를 처리하는 DTO 클래스
 class DiaryRequest {
     private String title;
     private String content;
-    private String createdAt; // 날짜 필드 추가
+    private String createdAt;
 
-    // Getters and Setters
     public String getTitle() {
         return title;
     }

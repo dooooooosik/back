@@ -14,20 +14,18 @@ public class Diary {
     @Lob
     private String content;
 
-    @Temporal(TemporalType.DATE) // 날짜만 저장
+    @Temporal(TemporalType.DATE)
     private Date createdAt;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private AppUser user;
 
-    private String username; // username 필드 추가
+    private String username;
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -58,6 +56,11 @@ public class Diary {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = new Date();
     }
 
     public Date getUpdatedAt() {

@@ -7,6 +7,7 @@ import com.example.dreambackend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Date;
 
 @Service
 public class DiaryService {
@@ -27,16 +28,15 @@ public class DiaryService {
         diary.setUsername(user.getUsername());
         diary.setTitle(title);
         diary.setContent(content);
-        diary.setCreatedAt(java.sql.Date.valueOf(createdAt)); // 날짜 저장
+        diary.setCreatedAt(java.sql.Date.valueOf(createdAt));
         return diaryRepository.save(diary);
     }
-
 
     public List<Diary> getDiaries(Long userId) {
         return diaryRepository.findByUserId(userId);
     }
 
-    public Diary updateDiary(Long userId, Long diaryId, String title, String content) {
+    public Diary updateDiary(Long userId, Long diaryId, String title, String content, String createdAt) {
         Diary diary = diaryRepository.findById(diaryId)
                 .orElseThrow(() -> new IllegalArgumentException("Diary not found"));
 
@@ -46,6 +46,7 @@ public class DiaryService {
 
         diary.setTitle(title);
         diary.setContent(content);
+        diary.setCreatedAt(java.sql.Date.valueOf(createdAt));
 
         return diaryRepository.save(diary);
     }
