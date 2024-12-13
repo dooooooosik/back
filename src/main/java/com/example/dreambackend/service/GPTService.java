@@ -45,7 +45,7 @@ public class GPTService {
                         Map.of("role", "system", "content", "You are a dream interpretation expert."),
                         Map.of("role", "user", "content", "꿈 해몽 키워드: " + keyword)
                 ),
-                "max_tokens", 200
+                "max_tokens", 500
         );
 
         // 요청 헤더
