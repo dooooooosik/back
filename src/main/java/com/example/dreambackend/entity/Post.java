@@ -11,7 +11,7 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private AppUser user; // 🔥 user로 명확히 설정
+    private AppUser user; // user로 명확히 설정
 
     private String title; // 게시글 제목
 
@@ -24,13 +24,12 @@ public class Post {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt; // 수정 날짜
 
+    private int likes = 0; // 좋아요 수 (기본값 0)
+    private int likeCount;
+
+    // Getters and Setters
     public Long getId() {
         return id;
-    }
-
-    // 🔥 getUsername -> getUser()로 변경
-    public String getUsername() {
-        return user.getUsername(); // user의 username을 가져온다.
     }
 
     public void setId(Long id) {
@@ -42,7 +41,7 @@ public class Post {
     }
 
     public void setUser(AppUser user) {
-        this.user = user; // 🔥 setUser로 명확히 수정
+        this.user = user;
     }
 
     public String getTitle() {
@@ -76,4 +75,20 @@ public class Post {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+
+    public void incrementLikes() {
+        this.likes++;
+    }
+
+    // 추가: getLikeCount 메서드
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
+
+
 }
